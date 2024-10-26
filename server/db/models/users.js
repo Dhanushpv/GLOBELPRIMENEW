@@ -13,13 +13,12 @@ const users = new mongoose.Schema({
         type : String,
    
     },
-    user_type:{
-        type :mongoose.Schema.Types.ObjectId,
-        ref : "usertypes"
-    },
-    image :{
+    imageInput :{
         type : String,
     },
+    coverleter :{
+        type : String
+    }
 
 });
 

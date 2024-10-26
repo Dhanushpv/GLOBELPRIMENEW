@@ -6,9 +6,9 @@ async function applyJob(event) {
     // Retrieve input values
     let name = document.getElementById('name').value;
     let email = document.getElementById('email').value;
-    let coverLetter = document.getElementById('coverLetter').value;
-    let portfolio = document.getElementById('portfolio').value;
+    let profolio = document.getElementById('profolio').value;
     let imageInput = document.getElementById('image');
+    let coverleter =document.getElementById('coverleter').value;
 
     if (imageInput.files && imageInput.files[0]) {
         const file = imageInput.files[0];
@@ -20,9 +20,9 @@ async function applyJob(event) {
             let data = {
                 name,
                 email,
-                coverLetter,
-                portfolio,
-                image: base64ImageString  // Changed key to 'image' for clarity
+                profolio,
+                coverleter,
+                imageInput: base64ImageString  // Changed key to 'image' for clarity
             };
             
             let strData = JSON.stringify(data);
@@ -56,6 +56,64 @@ async function applyJob(event) {
     }
 }
 
+async function ApplicationView() {
+    
+    console.log("reached at .....")
+
+    try {
+            
+        const response = await fetch('/user', {
+            method: 'GET',
+        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const parsed_data = await response.json();
+        console.log(parsed_data)
+
+        let data = parsed_data.data
+        console.log("data",data);
+
+        const tableBody = document.getElementById('applicationView');
+        let row='';
+        for(let i=0; i<data.length ; i++){
+          
+
+        
+            row += `
+                <div class="row g-4">
+                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                        <img class="flex-shrink-0 img-fluid border rounded" 
+                            src="${data[i].imageInput}" 
+                            alt="${data[i].jobTitle} image" 
+                            style="width: 80px; height: 80px;" 
+                            ;">
+
+
+                        <div class="text-start ps-4">
+                            <h5 class="mb-3">${data[i].name}</h5>
+                            <div class="text-truncate me-3"><i class=" text-primary me-2"></i>${data[i].email}</div>
+                            <div class="text-truncate me-3"><i class=" text-primary me-2"></i>${data[i].profolio}</div>
+                            <div class="text-truncate me-0"><i class=" text-primary me-2"></i>${data[i].coverleter.slice(0,100)+"...."}</div>
+                        </div>
+                    </div>
+                   
+                </div>
+            `;
+
+            // tableBody.appendChild(row);
+            tableBody.innerHTML =row;
+
+        }
+
+    } catch (error) {
+
+        console.error('Fetch error:', error);
+
+    }
+
+}
+
 async function addjob(event) {
     event.preventDefault();
 
@@ -68,15 +126,15 @@ async function addjob(event) {
     let Job_description = document.getElementById('job_Discription').value;
     let Responsibility = document.getElementById('responsibility').value;
     let Qualifications = document.getElementById('qualifications').value;
-    let image = document.getElementById('image');
+    let imageInput = document.getElementById('image');
 
     if (!jobTitle || !jobLocation || !jobTime || !salary || !DateLine || !Job_description || !Responsibility || !Qualifications) {
         alert("Please fill out all fields.");
         return;
     }
 
-    if (image.files && image.files[0]) {
-        const file = image.files[0];
+    if (imageInput.files && imageInput.files[0]) {
+        const file = imageInput.files[0];
         const reader = new FileReader();
 
         reader.onloadend = async function () {
@@ -87,7 +145,7 @@ async function addjob(event) {
                 jobLocation,
                 jobTime,
                 salary,
-                image: base64ImageString,
+                imageInput: base64ImageString,
                 DateLine,
                 Job_description,
                 Responsibility,
@@ -153,18 +211,18 @@ async function View(){
         console.log(parsed_data)
 
         let data = parsed_data.data
-        console.log("data",data[4].image);
+        console.log("data",data);
 
-        const tableBody = document.getElementById('applicationView');
+        const tableBody = document.getElementById('joblist');
         let row='';
-        for(let i=4; i<data.length ; i++){
+        for(let i=0; i<data.length ; i++){
 
         
             row += `
                 <div class="row g-4">
                     <div class="col-sm-12 col-md-8 d-flex align-items-center">
                         <img class="flex-shrink-0 img-fluid border rounded" 
-                            src="${data[i].image}" 
+                            src="${data[i].imageInput}" 
                             alt="${data[i].jobTitle} image" 
                             style="width: 80px; height: 80px;" 
                             ;">

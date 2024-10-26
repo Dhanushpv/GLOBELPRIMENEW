@@ -16,14 +16,14 @@ exports.create1 = async function (req, res) {
         console.log('body',body);
         let name = req.body.name
         let emails = req.body.email
-        let image = req.body.image;
-            console.log("image : ", image);
+        let imageInput = req.body.imageInput;
+            console.log("image : ", imageInput);
 
 
-        if (image) {
-            let image_path = await fileUpload(image, "users");
+        if (imageInput) {
+            let image_path = await fileUpload(imageInput, "users");
             console.log("image_path", image_path);
-            body.image = image_path;
+            body.imageInput = image_path;
                     }
         // let content = await application(name,emails)
 
@@ -118,14 +118,14 @@ exports.jobList = async function (req , res){
     try {
         
         let body = req.body
-        let image = req.body.image;
-            console.log("image : ", image);
+        let imageInput = req.body.imageInput;
+            console.log("image : ", imageInput);
 
 
-        if (image) {
-            let image_path = await fileUpload(image, "users");
+        if (imageInput) {
+            let image_path = await fileUpload(imageInput, "users");
             console.log("image_path", image_path);
-            body.image = image_path;
+            body.imageInput = image_path;
             }
 
             let userData = await joblist.create(body);
